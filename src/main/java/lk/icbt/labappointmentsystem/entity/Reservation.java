@@ -1,9 +1,6 @@
 package lk.icbt.labappointmentsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +22,24 @@ public class Reservation {
     private Boolean isTested;
     private String createdBy;
     private Timestamp createdDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
+    private Test test;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "timeSlot_id")
+    private TimeSlot timeSlot;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private FinalResult  finalResult;
 
 }

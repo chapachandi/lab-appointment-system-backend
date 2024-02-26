@@ -1,13 +1,11 @@
 package lk.icbt.labappointmentsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +20,11 @@ public class FinalResult {
     private String description;
     private String createdBy;
     private Timestamp createdDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
+    @OneToMany(mappedBy = "finalResult", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FinalResultHasTest> finalResultHasTestList;
 }

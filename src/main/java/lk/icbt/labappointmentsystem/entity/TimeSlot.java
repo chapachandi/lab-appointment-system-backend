@@ -1,15 +1,13 @@
 package lk.icbt.labappointmentsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +20,7 @@ public class TimeSlot {
     private Timestamp startTime;
     private Timestamp endTime;
 
-    @NotBlank(message = "Test name cannot be blank")
+    @NotBlank(message = "Display Text cannot be blank")
     private String displayText;
 
 
@@ -30,4 +28,11 @@ public class TimeSlot {
     private Boolean isBooked;
     private String createdBy;
     private Timestamp createdDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
+    private Test test;
+
+    @OneToMany(mappedBy = "timeSlot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservationList;
+
 }

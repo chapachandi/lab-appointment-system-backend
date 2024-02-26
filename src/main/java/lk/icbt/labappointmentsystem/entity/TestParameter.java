@@ -1,15 +1,13 @@
 package lk.icbt.labappointmentsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,5 +27,14 @@ public class TestParameter {
     private BigDecimal price;
     private String createdBy;
     private Timestamp createdDate;
+
+
+    @OneToMany(mappedBy = "testParameter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FinalResultHasTest> finalResultHasTestList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
+    private Test test;
+
 
 }
