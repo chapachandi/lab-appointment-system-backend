@@ -17,8 +17,6 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer testId;
 
-    @NotBlank(message = "Patient name cannot be blank")
-    private String patientName;
 
     @NotBlank(message = "Test name cannot be blank")
     private String testName;
