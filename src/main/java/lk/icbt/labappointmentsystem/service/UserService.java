@@ -1,5 +1,6 @@
 package lk.icbt.labappointmentsystem.service;
 
+import lk.icbt.labappointmentsystem.dto.LoginDTO;
 import lk.icbt.labappointmentsystem.dto.UserDTO;
 import lk.icbt.labappointmentsystem.entity.User;
 import org.springframework.data.domain.Page;
@@ -18,4 +19,6 @@ public interface UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO);
 
     public void deleteUser(Long id) ;
+
+    User authenticateUser(LoginDTO loginDTO);
 }

@@ -1,5 +1,6 @@
 package lk.icbt.labappointmentsystem.service.impl;
 
+import lk.icbt.labappointmentsystem.dto.LoginDTO;
 import lk.icbt.labappointmentsystem.dto.UserDTO;
 import lk.icbt.labappointmentsystem.entity.User;
 import lk.icbt.labappointmentsystem.repeository.UserRepository;
@@ -50,5 +51,16 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User authenticateUser(LoginDTO loginDTO) {
+        User user = userRepository.findByEmail(loginDTO.getEmail());
+
+        if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
+            return user;
+        } else {
+            return null;
+        }
     }
 }
