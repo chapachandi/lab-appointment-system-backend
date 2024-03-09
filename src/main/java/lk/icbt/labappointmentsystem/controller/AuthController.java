@@ -16,15 +16,15 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginDTO loginDTO) {
-        // Call the service to authenticate the user
-        User authenticatedUser = userService.authenticateUser(loginDTO);
-
-        if (authenticatedUser != null) {
-            return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<User> login(@RequestBody LoginDTO loginDTO) {
+//        // Call the service to authenticate the user
+//        User authenticatedUser = userService.authenticateUser(loginDTO);
+//
+//        if (authenticatedUser != null) {
+//            return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 }

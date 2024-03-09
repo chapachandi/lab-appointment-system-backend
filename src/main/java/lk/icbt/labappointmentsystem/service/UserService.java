@@ -8,9 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 public interface UserService {
-
-
-
     public Page<UserDTO> getAllUsers(int page, int size);
 
     public UserDTO getUserById(Long id);
@@ -20,5 +17,6 @@ public interface UserService {
 
     public void deleteUser(Long id) ;
 
-    User authenticateUser(LoginDTO loginDTO);
+//    User authenticateUser(LoginDTO loginDTO);
+    UserDTO findEmailAndPassword(String email, String password);
 }
