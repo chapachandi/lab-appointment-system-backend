@@ -1,7 +1,10 @@
 package lk.icbt.labappointmentsystem.service.impl;
 
+import lk.icbt.labappointmentsystem.dto.LoginDTO;
 import lk.icbt.labappointmentsystem.dto.UserDTO;
 import lk.icbt.labappointmentsystem.entity.User;
+import lk.icbt.labappointmentsystem.exception.NotFoundException;
+import lk.icbt.labappointmentsystem.exception.ValidateException;
 import lk.icbt.labappointmentsystem.repeository.UserRepository;
 import lk.icbt.labappointmentsystem.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -10,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,8 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
+//        User user = modelMapper.map(userDTO, User.class);
+//        userRepository.save(user);
+//        return userDTO;
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ValidateException("Registration Already Exist");
+        }
         User user = modelMapper.map(userDTO, User.class);
-        userRepository.save(user);
+        userRepository.save(user); // Save the user to the database
         return userDTO;
     }
 
@@ -50,5 +61,25 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+//    @Override
+//    public User authenticateUser(LoginDTO loginDTO) {
+//        User user = userRepository.findByEmail(loginDTO.getEmail());
+//
+//        if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
+//            return user;
+//        } else {
+//            return null;
+//        }
+//    }
+
+    @Override
+    public UserDTO findEmailAndPassword(String email, String password) {
+        Optional<User> reg = userRepository.findByEmailAndPassword(email, password);
+        if (reg.isPresent()) {
+            return modelMapper.map(reg.get(), UserDTO.class);
+        }
+        throw new NotFoundException("Email name and Password Not Matched");
     }
 }

@@ -1,16 +1,13 @@
-package lk.icbt.labappointmentsystem.entity;
+package lk.icbt.labappointmentsystem.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.math.BigDecimal;
+
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
-@Getter
-@Setter
+
 @Entity
 public class TimeSlot {
     @Id
@@ -33,6 +30,6 @@ public class TimeSlot {
     private Test test;
 
     @OneToMany(mappedBy = "timeSlot", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservationList;
+    private Set<Reservation> reservationList;
 
 }

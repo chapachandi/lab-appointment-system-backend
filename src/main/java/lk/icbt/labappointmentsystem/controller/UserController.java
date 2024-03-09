@@ -2,11 +2,15 @@ package lk.icbt.labappointmentsystem.controller;
 
 import lk.icbt.labappointmentsystem.dto.UserDTO;
 import lk.icbt.labappointmentsystem.entity.User;
+import lk.icbt.labappointmentsystem.exception.NotFoundException;
 import lk.icbt.labappointmentsystem.service.impl.UserServiceImpl;
+import lk.icbt.labappointmentsystem.util.StandradResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/user")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -66,12 +71,21 @@ public class UserController {
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
+//    @PostMapping
+//    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+//        User user = modelMapper.map(userDTO, User.class);
+//
+//        //user = userRepository.save(user);
+//        return new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.CREATED);
+//    }
 
-        //user = userRepository.save(user);
-        return new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.CREATED);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveRegistration(@RequestBody UserDTO dto) throws ValidationException {
+        if (dto.getEmail().trim().length() <= 0) {
+            throw new NotFoundException("email can not be empty");
+        }
+        userService.createUser(dto);
+        return new ResponseEntity(new StandradResponse("201", "Done", dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -92,6 +106,15 @@ public class UserController {
         }
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity findEmailAndPassword(@RequestBody UserDTO user) {
+        if (!user.getEmail().equals("") && !user.getPassword().equals("")) {
+            UserDTO dto = userService.findEmailAndPassword(user.getEmail(), user.getPassword());
+            return new ResponseEntity(new StandradResponse("200", "done",dto), HttpStatus.OK);
+        }
+        throw new NotFoundException("Please Input email And Password");
     }
 
 }
