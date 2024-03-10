@@ -18,8 +18,7 @@ public class FinalResultHasTest {
 
 
     private String description;
-    private Boolean isActive;
-    private String createdBy;
+
     private Timestamp createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testParameter_id")

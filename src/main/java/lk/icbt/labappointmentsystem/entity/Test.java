@@ -25,8 +25,7 @@ public class Test {
 
 
     private BigDecimal price;
-    private String createdBy;
-    private Timestamp createdDate;
+
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservationList;

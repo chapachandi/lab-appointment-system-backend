@@ -18,8 +18,9 @@ public class ReservationDTO {
     private Boolean isActive;
 
     private Boolean isTested;
+    private Long customerId;
+    private Integer testId;
+    private Integer timeSlotId;
 
-    private String createdBy;
 
-    private Timestamp createdDate;
 }

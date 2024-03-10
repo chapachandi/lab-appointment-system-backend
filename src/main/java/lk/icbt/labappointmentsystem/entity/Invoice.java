@@ -1,8 +1,7 @@
 package lk.icbt.labappointmentsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -11,6 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Invoice {
 
     @Id
@@ -19,8 +21,7 @@ public class Invoice {
     private String productDescription;
     private BigDecimal amount;
 
-    private String createdBy;
-    private Timestamp createdDate;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

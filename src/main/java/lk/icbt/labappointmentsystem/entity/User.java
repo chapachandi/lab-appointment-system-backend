@@ -32,15 +32,13 @@ public class User {
     private String username;
 
     private String mobileNumber;
-//    private String createdBy;
-//
-//    private Timestamp createdDate;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Invoice> invoiceList;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Reservation> reservationList;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoiceList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservationList;
 
 
 }

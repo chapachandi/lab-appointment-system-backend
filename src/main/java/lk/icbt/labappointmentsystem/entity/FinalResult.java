@@ -18,8 +18,7 @@ public class FinalResult {
 
 
     private String description;
-    private String createdBy;
-    private Timestamp createdDate;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")

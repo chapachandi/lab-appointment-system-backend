@@ -17,16 +17,14 @@ public class TestParameter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer testParameterId;
 
-    @NotBlank(message = "Patient name cannot be blank")
-    private String patientName;
+
 
     @NotBlank(message = "Test name cannot be blank")
     private String testName;
 
 
     private BigDecimal price;
-    private String createdBy;
-    private Timestamp createdDate;
+    private String parameterRange;
 
 
     @OneToMany(mappedBy = "testParameter", cascade = CascadeType.ALL, orphanRemoval = true)

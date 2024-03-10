@@ -17,17 +17,16 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer timeSlotId;
 
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private String startTime;
+    private String endTime;
 
     @NotBlank(message = "Display Text cannot be blank")
     private String displayText;
 
 
     private Boolean isActive;
-    private Boolean isBooked;
-    private String createdBy;
-    private Timestamp createdDate;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_id")
     private Test test;

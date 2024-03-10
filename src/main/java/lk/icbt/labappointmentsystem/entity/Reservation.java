@@ -20,8 +20,7 @@ public class Reservation {
     private Timestamp reservationDate;
     private Boolean isActive;
     private Boolean isTested;
-    private String createdBy;
-    private Timestamp createdDate;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
