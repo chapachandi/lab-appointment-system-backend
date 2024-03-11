@@ -9,9 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class InvoiceCreateDTO {
-    private List<Long> reservationIdList;
-    private Long userId;
+public class ChangeTypeDTO {
+
+    private Long reservationId;
+    private String status;
 
 
 }

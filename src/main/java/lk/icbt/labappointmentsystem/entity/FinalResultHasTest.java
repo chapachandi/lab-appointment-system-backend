@@ -19,7 +19,7 @@ public class FinalResultHasTest {
 
     private String description;
 
-    private Timestamp createdDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testParameter_id")
     private TestParameter testParameter;

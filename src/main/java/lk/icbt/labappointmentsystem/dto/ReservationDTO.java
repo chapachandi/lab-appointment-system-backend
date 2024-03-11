@@ -13,14 +13,15 @@ public class ReservationDTO {
 
     private String description;
 
-    private Timestamp reservationDate;
+    private String reservationDate;
 
     private Boolean isActive;
 
     private Boolean isTested;
-    private Long customerId;
+    private Long userId;
     private Integer testId;
     private Integer timeSlotId;
+
 
 
 }

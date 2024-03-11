@@ -27,6 +27,7 @@ public class TestParameter {
     private String parameterRange;
 
 
+
     @OneToMany(mappedBy = "testParameter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FinalResultHasTest> finalResultHasTestList;
 

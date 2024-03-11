@@ -1,2 +1,4 @@
-package lk.icbt.labappointmentsystem.util;public enum ROLE {
+package lk.icbt.labappointmentsystem.enums;
+
+public enum ROLE {
 }

@@ -1,8 +1,12 @@
 package lk.icbt.labappointmentsystem.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lk.icbt.labappointmentsystem.dto.InvoiceCreateDTO;
 import lk.icbt.labappointmentsystem.dto.InvoiceDTO;
 import lk.icbt.labappointmentsystem.dto.UserDTO;
+import lk.icbt.labappointmentsystem.dto.pdf.InvoicePrintDTO;
+import lk.icbt.labappointmentsystem.dto.pdf.invoice.TestDetails;
 import lk.icbt.labappointmentsystem.entity.Invoice;
 import lk.icbt.labappointmentsystem.entity.Reservation;
 import lk.icbt.labappointmentsystem.entity.User;
@@ -14,14 +18,18 @@ import lk.icbt.labappointmentsystem.repeository.UserRepository;
 import lk.icbt.labappointmentsystem.service.InvoiceService;
 import lk.icbt.labappointmentsystem.service.ReservationService;
 import lk.icbt.labappointmentsystem.service.UserService;
+import lk.icbt.labappointmentsystem.util.PrintUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +47,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    TemplateEngine templateEngine;
 
 
     @Override
@@ -63,4 +74,30 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         return  modelMapper.map(saveInvoice, InvoiceDTO.class);
     }
+
+
+
+
+    public ByteArrayResource printInvoice(HttpServletRequest request, HttpServletResponse response,Long id){
+
+        Optional<Invoice> invoice = invoiceRepository.findById(id);
+
+        List<Reservation> reservationsbyInvoiceId = reservationRepository.findByInvoice(invoice.get());
+        List<TestDetails> testDetails =new ArrayList<>();
+        reservationsbyInvoiceId.stream().forEach((e)->{
+            TestDetails details = TestDetails.builder().testName(e.getTest().getTestName()).price(String.valueOf(e.getTest().getPrice())).build();
+        testDetails.add(details);
+        });
+
+
+        InvoicePrintDTO printDTO = InvoicePrintDTO.builder()
+                .name(invoice.get().getUser().getName())
+                .total(String.valueOf(invoice.get().getAmount()))
+                .email(invoice.get().getUser().getEmail())
+                .testDetails(testDetails).build();
+
+        PrintUtils printUtils = new PrintUtils();
+
+        ByteArrayResource pdfByteArray = printUtils.pdfGenerator(request,response,printDTO,"invoice",templateEngine);
+        return pdfByteArray;}
 }

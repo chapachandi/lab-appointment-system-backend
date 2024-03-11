@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/test")
+@CrossOrigin
 public class TestController {
 
     @Autowired
@@ -28,6 +29,13 @@ public class TestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(testDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<TestDTO>> getTestAll() {
+        List<TestDTO> allTests = testService.getAllTests();
+        return new ResponseEntity<>(allTests, HttpStatus.OK);
+
     }
 
     @PostMapping

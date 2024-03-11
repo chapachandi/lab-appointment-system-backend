@@ -1,5 +1,6 @@
 package lk.icbt.labappointmentsystem.controller;
 
+import lk.icbt.labappointmentsystem.dto.ChangeTypeDTO;
 import lk.icbt.labappointmentsystem.dto.ReservationDTO;
 import lk.icbt.labappointmentsystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservations")
+@CrossOrigin
 public class ReservationController {
 
     @Autowired
@@ -53,5 +55,11 @@ public class ReservationController {
             return ResponseEntity.noContent().build();
         }*/
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/changeReservationsStatus")
+    public ResponseEntity<ReservationDTO> changeReservationsStatus(@RequestBody ChangeTypeDTO changeTypeDTO){
+        ReservationDTO reservationDTO = reservationService.changeReservationsStatus(changeTypeDTO);
+        return ResponseEntity.ok(reservationDTO);
     }
 }

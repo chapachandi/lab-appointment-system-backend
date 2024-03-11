@@ -2,10 +2,12 @@ package lk.icbt.labappointmentsystem.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lk.icbt.labappointmentsystem.enums.ReservationStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ public class Reservation {
 
 
     private String description;
-    private Timestamp reservationDate;
+    private LocalDateTime reservationDate;
     private Boolean isActive;
     private Boolean isTested;
 
@@ -34,11 +36,13 @@ public class Reservation {
     @JoinColumn(name = "test_id")
     private Test test;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "timeSlot_id")
     private TimeSlot timeSlot;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private FinalResult  finalResult;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
 
 }

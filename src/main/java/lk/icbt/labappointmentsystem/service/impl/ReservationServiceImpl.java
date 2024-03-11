@@ -1,16 +1,19 @@
 package lk.icbt.labappointmentsystem.service.impl;
 
+import lk.icbt.labappointmentsystem.dto.ChangeTypeDTO;
 import lk.icbt.labappointmentsystem.dto.ReservationDTO;
 import lk.icbt.labappointmentsystem.entity.Reservation;
 import lk.icbt.labappointmentsystem.entity.Test;
 import lk.icbt.labappointmentsystem.entity.TimeSlot;
 import lk.icbt.labappointmentsystem.entity.User;
+import lk.icbt.labappointmentsystem.enums.ReservationStatus;
 import lk.icbt.labappointmentsystem.repeository.ReservationRepository;
 import lk.icbt.labappointmentsystem.repeository.TestRepository;
 import lk.icbt.labappointmentsystem.repeository.TimeSlotRepository;
 import lk.icbt.labappointmentsystem.repeository.UserRepository;
 import lk.icbt.labappointmentsystem.service.ReservationService;
 import lk.icbt.labappointmentsystem.service.UserService;
+import lk.icbt.labappointmentsystem.util.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,13 +60,16 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationDTO createReservation(ReservationDTO reservationDTO) {
         Reservation reservation = modelMapper.map(reservationDTO, Reservation.class);
-        Optional<User> reservedUser = userRepository.findById(reservationDTO.getCustomerId());
+        DateUtils dateUtils = new DateUtils();
+        reservation.setReservationDate(dateUtils.getLocalTimeByString(reservationDTO.getReservationDate()+" 00:00:00"));
+        Optional<User> reservedUser = userRepository.findById(reservationDTO.getUserId());
         Optional<Test> test = testRepository.findById(reservationDTO.getTestId());
         Optional<TimeSlot> timeSlot = timeSlotRepository.findById(reservationDTO.getTimeSlotId());
         if(reservedUser.isPresent() && test.isPresent() && timeSlot.isPresent()){
             reservation.setUser(reservedUser.get());
             reservation.setTest(test.get());
             reservation.setTimeSlot(timeSlot.get());
+            reservation.setReservationStatus(ReservationStatus.PENDING);
         }
 
         reservation = reservationRepository.save(reservation);
@@ -80,6 +86,16 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void deleteReservation(Long reservationId) {
         reservationRepository.deleteById(reservationId);
+    }
+
+    @Override
+    public ReservationDTO changeReservationsStatus(ChangeTypeDTO changeTypeDTO) {
+        Optional<Reservation> reservationRepositoryById = reservationRepository.findById(changeTypeDTO.getReservationId());
+        ReservationStatus reservationStatus = ReservationStatus.valueOf(changeTypeDTO.getStatus());
+        Reservation reservation = reservationRepositoryById.get();
+        reservation.setReservationStatus(reservationStatus);
+        Reservation save = reservationRepository.save(reservation);
+        return modelMapper.map(save, ReservationDTO.class);
     }
 }
 
