@@ -24,6 +24,12 @@ public class ReservationController {
         return ResponseEntity.ok(reservationDTOs);
     }
 
+    @GetMapping("customerId/{userId}")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationsByCustomerId(@PathVariable Long userId) {
+        List<ReservationDTO> reservationDTOs = reservationService.getAllReservationsByUser(userId);
+        return ResponseEntity.ok(reservationDTOs);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
         ReservationDTO reservationDTO = reservationService.getReservationById(id);
@@ -61,5 +67,11 @@ public class ReservationController {
     public ResponseEntity<ReservationDTO> changeReservationsStatus(@RequestBody ChangeTypeDTO changeTypeDTO){
         ReservationDTO reservationDTO = reservationService.changeReservationsStatus(changeTypeDTO);
         return ResponseEntity.ok(reservationDTO);
+    }
+
+    @PostMapping("/updatePayment/{reservationId}")
+    public ResponseEntity<ReservationDTO> updatePayment(@PathVariable Long reservationId){
+        ReservationDTO reservationDTO = reservationService.updatePayment(reservationId);
+        return new ResponseEntity<>(reservationDTO,HttpStatus.OK);
     }
 }

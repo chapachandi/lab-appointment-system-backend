@@ -22,6 +22,7 @@ public class Reservation {
     private LocalDateTime reservationDate;
     private Boolean isActive;
     private Boolean isTested;
+    private Boolean isPayed;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

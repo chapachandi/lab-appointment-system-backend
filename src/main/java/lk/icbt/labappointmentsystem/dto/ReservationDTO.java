@@ -18,6 +18,7 @@ public class ReservationDTO {
     private Boolean isActive;
 
     private Boolean isTested;
+    private Boolean isPayed;
     private Long userId;
     private Integer testId;
     private Integer timeSlotId;

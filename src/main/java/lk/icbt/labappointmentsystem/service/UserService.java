@@ -10,12 +10,12 @@ import org.springframework.data.domain.Sort;
 public interface UserService {
     public Page<UserDTO> getAllUsers(int page, int size);
 
-    public UserDTO getUserById(Long id);
+    public UserDTO getUserById(Long userId);
     public UserDTO createUser(UserDTO userDTO) ;
 
-    public UserDTO updateUser(Long id, UserDTO userDTO);
+    public UserDTO updateUser(Long userId, UserDTO userDTO);
 
-    public void deleteUser(Long id) ;
+    public void deleteUser(Long userId) ;
 
 //    User authenticateUser(LoginDTO loginDTO);
     UserDTO findEmailAndPassword(String email, String password);

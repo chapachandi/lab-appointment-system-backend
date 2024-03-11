@@ -23,7 +23,7 @@ public class AController {
     @GetMapping(value = "/sendmail")
     public String sendmail() {
 
-        emailService.sendMail("chapachandi@gmail.com", "Test Subject", "Test mail");
+        emailService.sendMail("sasithadevindawasala@gmail.com", "Test Subject", "Test mail");
 
         return "emailsent";
     }

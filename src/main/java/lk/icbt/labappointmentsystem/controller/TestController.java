@@ -1,6 +1,7 @@
 package lk.icbt.labappointmentsystem.controller;
 
 import lk.icbt.labappointmentsystem.dto.TestDTO;
+import lk.icbt.labappointmentsystem.dto.TestParameterDTO;
 import lk.icbt.labappointmentsystem.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,5 +59,13 @@ public class TestController {
         testService.deleteTest(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/testParameter/{id}")
+    public ResponseEntity<List<TestParameterDTO>> getTestParameter(@PathVariable Integer id) {
+        List<TestParameterDTO> testParameter = testService.getTestParameter(id);
+        return  new ResponseEntity<>(testParameter, HttpStatus.OK);
+    }
+
+
 
 }

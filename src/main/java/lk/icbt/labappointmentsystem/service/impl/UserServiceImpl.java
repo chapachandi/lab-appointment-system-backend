@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public UserDTO getUserById(Long id) {
-        User userById = userRepository.findById(id).orElse(null);
+    public UserDTO getUserById(Long userId) {
+        User userById = userRepository.findById(userId).orElse(null);
         return modelMapper.map(userById, UserDTO.class);
 
     }
@@ -45,12 +45,15 @@ public class UserServiceImpl implements UserService {
             throw new ValidateException("Registration Already Exist");
         }
         User user = modelMapper.map(userDTO, User.class);
-        userRepository.save(user); // Save the user to the database
-        return userDTO;
+        user = userRepository.save(user);
+        UserDTO userdto=modelMapper.map(user, UserDTO.class );
+        userdto.setUserId(user.getUserId());
+
+        return userdto;
     }
 
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
-        User existingUser = userRepository.findById(id).orElse(null);
+    public UserDTO updateUser(Long userId, UserDTO userDTO) {
+        User existingUser = userRepository.findById(userId).orElse(null);
         if (existingUser != null) {
             User user = modelMapper.map(userDTO, User.class);
             User savedUser = userRepository.save(existingUser);
@@ -59,8 +62,8 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 
 //    @Override
@@ -80,6 +83,6 @@ public class UserServiceImpl implements UserService {
         if (reg.isPresent()) {
             return modelMapper.map(reg.get(), UserDTO.class);
         }
-        throw new NotFoundException("Email name and Password Not Matched");
+        throw new NotFoundException("Email and Password Not Matched");
     }
 }

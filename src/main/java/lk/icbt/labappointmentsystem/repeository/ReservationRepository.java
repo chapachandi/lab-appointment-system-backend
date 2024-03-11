@@ -3,6 +3,7 @@ package lk.icbt.labappointmentsystem.repeository;
 import lk.icbt.labappointmentsystem.entity.Invoice;
 import lk.icbt.labappointmentsystem.entity.Reservation;
 import lk.icbt.labappointmentsystem.entity.Test;
+import lk.icbt.labappointmentsystem.entity.User;
 import org.hibernate.annotations.Parameter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByInvoice(Invoice invoice);
+
+    List<Reservation> findByUser(User user);
 
     @Query("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :from AND :to ")
 

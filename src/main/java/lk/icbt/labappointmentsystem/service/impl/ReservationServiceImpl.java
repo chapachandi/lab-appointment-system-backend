@@ -70,6 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setTest(test.get());
             reservation.setTimeSlot(timeSlot.get());
             reservation.setReservationStatus(ReservationStatus.PENDING);
+            reservation.setIsPayed(Boolean.FALSE);
         }
 
         reservation = reservationRepository.save(reservation);
@@ -96,6 +97,30 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReservationStatus(reservationStatus);
         Reservation save = reservationRepository.save(reservation);
         return modelMapper.map(save, ReservationDTO.class);
+    }
+
+    @Override
+    public ReservationDTO updatePayment(Long reservationId) {
+        Optional<Reservation> reservationRepositoryById = reservationRepository.findById(reservationId);
+        Reservation reservation = reservationRepositoryById.get();
+        reservation.setIsPayed(Boolean.TRUE);
+        Reservation save = reservationRepository.save(reservation);
+         return modelMapper.map(save, ReservationDTO.class);
+    }
+
+    @Override
+    public List<ReservationDTO> getAllReservationsByUser(Long userId) {
+        Optional<User> byId = userRepository.findById(userId);
+
+        List<ReservationDTO> reservationDTOs = new ArrayList<>();
+
+        List<Reservation> reservations = reservationRepository.findByUser(byId.get());
+
+        for (Reservation reservation : reservations) {
+            reservationDTOs.add(modelMapper.map(reservation, ReservationDTO.class));
+        }
+        return reservationDTOs;
+        
     }
 }
 
