@@ -62,8 +62,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
-        UserDTO userById = userService.getUserById(userId);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO userById = userService.getUserById(id);
 
         if (userById == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -84,8 +84,8 @@ public class UserController {
         if (dto.getEmail().trim().length() <= 0) {
             throw new NotFoundException("email can not be empty");
         }
-        userService.createUser(dto);
-        return new ResponseEntity(new StandradResponse("201", "Done", dto), HttpStatus.CREATED);
+        UserDTO user = userService.createUser(dto);
+        return new ResponseEntity(new StandradResponse("201", "Done", user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -99,12 +99,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        UserDTO userById = userService.getUserById(userId);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        UserDTO userById = userService.getUserById(id);
         if (userById == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.deleteUser(userId);
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

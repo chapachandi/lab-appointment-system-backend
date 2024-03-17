@@ -31,10 +31,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public UserDTO getUserById(Long userId) {
-        User userById = userRepository.findById(userId).orElse(null);
+    public UserDTO getUserById(Long id) {
+        User userById = userRepository.findById(id).orElse(null);
         return modelMapper.map(userById, UserDTO.class);
 
+    }
+
+    private User createFormatUserId(User user){
+        if (user.getUserId() == null) {
+            ;
+
+        }
+        user.setFormattedUserId(String.format("PID%03d", user.getUserId()));
+        userRepository.save(user);
+        return user;
     }
 
     public UserDTO createUser(UserDTO userDTO) {
@@ -45,15 +55,12 @@ public class UserServiceImpl implements UserService {
             throw new ValidateException("Registration Already Exist");
         }
         User user = modelMapper.map(userDTO, User.class);
-        user = userRepository.save(user);
-        UserDTO userdto=modelMapper.map(user, UserDTO.class );
-        userdto.setUserId(user.getUserId());
-
-        return userdto;
+        userRepository.save(user); // Save the user to the database
+        return modelMapper.map(createFormatUserId(user), UserDTO.class);
     }
 
-    public UserDTO updateUser(Long userId, UserDTO userDTO) {
-        User existingUser = userRepository.findById(userId).orElse(null);
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
             User user = modelMapper.map(userDTO, User.class);
             User savedUser = userRepository.save(existingUser);
@@ -62,8 +69,8 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
 //    @Override
@@ -83,6 +90,6 @@ public class UserServiceImpl implements UserService {
         if (reg.isPresent()) {
             return modelMapper.map(reg.get(), UserDTO.class);
         }
-        throw new NotFoundException("Email and Password Not Matched");
+        throw new NotFoundException("Email name and Password Not Matched");
     }
 }
