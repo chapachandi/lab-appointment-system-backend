@@ -28,31 +28,6 @@ public class UserController {
     @Autowired
     private ModelMapper  modelMapper;
 
-   /* @GetMapping
-    public Page<UserDTO> getAllUsers(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size) {
-        return userService.getAllUsers(page, size);
-    }
-
-    @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-    @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
-        return userService.createUser(userDTO);
-    }
-
-    @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(id, userDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-    }*/
 
     @GetMapping
     public ResponseEntity<Page<UserDTO>> getAllUsers() {
