@@ -13,5 +13,6 @@ public class UserDTO {
     private String username;
     private String mobileNumber;
     private String formattedUserId;
+    private String reservationStatus;
 
 }

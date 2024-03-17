@@ -1,6 +1,7 @@
 package lk.icbt.labappointmentsystem.service.impl;
 
 import lk.icbt.labappointmentsystem.dto.LoginDTO;
+import lk.icbt.labappointmentsystem.dto.TestDTO;
 import lk.icbt.labappointmentsystem.dto.UserDTO;
 import lk.icbt.labappointmentsystem.entity.User;
 import lk.icbt.labappointmentsystem.exception.NotFoundException;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,10 +28,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Page<UserDTO> getAllUsers(int page, int size) {
-        Page<User> users = userRepository.findAll(PageRequest.of(page, size, Sort.by("id").ascending()));
-        return users.map(user -> modelMapper.map(user, UserDTO.class));
-
+//    public Page<UserDTO> getAllUsers(int page, int size) {
+//        Page<User> users = userRepository.findAll(PageRequest.of(page, size, Sort.by("id").ascending()));
+//        return users.map(user -> modelMapper.map(user, UserDTO.class));
+//
+//
+//    }
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
     }
 
     public UserDTO getUserById(Long id) {
